@@ -11,15 +11,13 @@ namespace Lab10_Extended
     {
         static void Main(string[] args)
         {
-
+            //Setting up the Hash Table/////////////////////////////////////////////////////////////////
             Dictionary<string, List<string>> Movies = new Dictionary<string, List<string>>();
-
             List<string> ScifiMovies = new List<string>();
             List<string> DramaMovies = new List<string>();
             List<string> AnimatMovies = new List<string>();
             List<string> HorrorMovies = new List<string>();
             List<Movie> AllMovies = new List<Movie>();
-
             ////////////////////////////////////////////////////////////////////////////////////////////
             AllMovies.Add(new Movie("Star Wars", "science fiction"));
             AllMovies.Add(new Movie("A Space Odyssey", "science fiction"));
@@ -38,7 +36,6 @@ namespace Lab10_Extended
             AllMovies.Add(new Movie("The Ring", "horror"));
             AllMovies.Add(new Movie("", "horror"));
             ////////////////////////////////////////////////////////////////////////////////////////////
-
             foreach (Movie item in AllMovies)
             {
                 if (item.CATEGORY == "science fiction")
@@ -50,24 +47,62 @@ namespace Lab10_Extended
                 if (item.CATEGORY == "horror")
                     HorrorMovies.Add(item.TITLE);
             }
-
-            /////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////
             Movies["science fiction"] = ScifiMovies;
             Movies["drama"] = DramaMovies;
             Movies["animated"] = AnimatMovies;
             Movies["horror"] = HorrorMovies;
-            /////////////////////////////////////////////////////////////////
-
-
-            Console.WriteLine("Welcome to the Movie Directory");
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////
+            //Display and functionality
+            Console.WriteLine("       Welcome to the Movie Directory       ");
+            Console.WriteLine("============================================");
+            Console.WriteLine("                    MENU                    ");
+            Console.WriteLine("============================================");
+            Console.WriteLine("Drama  | Science Fiction | Animated | Horror");
+            Console.WriteLine();
+            Console.WriteLine("   1   |        2        |    3     |    4  ");
+            Console.WriteLine();
+            Console.WriteLine("Directions");
+            //================================
+            Console.WriteLine("=========");
+            Console.WriteLine("Please enter a number (1-4) for a movie category.");
             while (true)
             {
-                Console.WriteLine("=========");
-                Console.WriteLine("Please enter a movie category.");
-                string answer = Console.ReadLine().ToLower();
-                if (validateAnswer(answer))
+            int selection;
+            while (true)
+            {
+                while (!int.TryParse(Console.ReadLine(), out selection))
+                    {
+                        Console.WriteLine("Please input a correct value.");
+                    }
+                    if (selection >= 1 && selection <= 4)
+                        break;
+                    else
+                        Console.WriteLine("Value needs to be from 1 to 4.");
+                        Console.WriteLine("Please enter another number (1-4) for a movie category.");
+                }
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+                string answer="";
+                switch (selection)
                 {
-                    List<string> finalList = CategorySearch(answer.Trim(), Movies);
+                    case 1:
+                        answer = "drama";
+                        break;
+                    case 2:
+                        answer = "science fiction";
+                        break;
+                    case 3:
+                        answer = "animated";
+                        break;
+                    case 4:
+                        answer = "horror";
+                        break;
+                }
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+                    List<string> finalList = CategorySearch(answer, Movies);
                     foreach (string item in finalList)
                     {
                         Console.WriteLine(item);
@@ -76,19 +111,20 @@ namespace Lab10_Extended
                     string cont = Console.ReadLine();
                     if (cont == "n" || answer == "N")
                         break;
-                }
+                Console.WriteLine("Please enter another number");
             }
-
         }//MAIN---------------------
 
         //Returns cooresponding hashtable (dictionary) items for given key
         public static List<string> CategorySearch(string answer, Dictionary<string, List<string>> Movies)
         {
             List<string> finalList = new List<string>();
+            List<string> SortedfinalList = new List<string>();
             finalList = Movies[answer];
+            finalList.Sort();
             return finalList;
         }
-        
+              
         //Validation of input
         public static bool validateAnswer(string answer)
         {
@@ -111,5 +147,5 @@ namespace Lab10_Extended
             else
                 return true;
         }
-  
+
 }}//END----------------------
